@@ -91,7 +91,6 @@ for ra_prof, materia_id, semestre, ano, status in cur.fetchall():
     })
 
 # ====== MIGRANDO MATRIZ CURRICULAR ======
-# Vamos usar o formato documentado, um por curso, com array de matérias:
 cur.execute("SELECT curso_id, materia_id FROM MatrizCurricular")
 matriz = {}
 for curso_id, materia_id in cur.fetchall():
@@ -105,7 +104,6 @@ for curso_id, materias in matriz.items():
     })
 
 # ====== MIGRANDO ORIENTADOR ======
-# Recomenda-se agrupar por grupo_id, para formato NoSQL amigável:
 cur.execute("SELECT grupo_id, prof_ra, aluno_ra FROM Orientador")
 grupos = {}
 for grupo_id, prof_ra, aluno_ra in cur.fetchall():
