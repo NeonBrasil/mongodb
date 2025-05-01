@@ -1,0 +1,125 @@
+queries
+
+## histórico escolar de qualquer aluno, retornando o código e nome da disciplina, semestre e ano que a disciplina foi cursada e nota final
+
+db.cursando.aggregate([
+  { $match: { "RA": "20210001" } },
+  {
+    $lookup: {
+      from: "disciplinas",
+      localField: "disciplina_id",
+      foreignField: "_id",
+      as: "disciplina"
+    }
+  },
+  { $unwind: "$disciplina" },
+  {
+    $project: {
+      _id: 0,
+      codigo: "$disciplina_id",
+      nome: "$disciplina.nome_materia",
+      semestre: "$Semestre",
+      ano: "$Ano",
+      nota_final: "$Nota"
+    }
+  }
+])
+
+
+##  Histórico de disciplinas ministradas por qualquer professor, com semestre e ano
+
+db.leciona.aggregate([
+  { $match: { "RA_Prof": "1001" } },
+  {
+    $lookup: {
+      from: "disciplinas",
+      localField: "materia_id",
+      foreignField: "_id",
+      as: "disciplina"
+    }
+  },
+  { $unwind: "$disciplina" },
+  {
+    $project: {
+      _id: 0,
+      materia_id: "$materia_id",
+      nome: "$disciplina.nome_materia",
+      semestre: "$Semestre",
+      ano: "$Ano"
+    }
+  }
+])
+
+## Listar alunos que já se formaram (foram aprovados em todos os cursos de uma matriz curricular) em um determinado semestre de um ano
+
+// 1º Passo: Descobrir quais alunos têm aprovação em todas as matérias da matriz do curso
+// Essa query traz todos os alunos formados no semestre/ano pedido
+var semestre_formatura = "2024.2";
+var ano_formatura = 2024;
+
+db.alunos.aggregate([
+  // (Opcional) Se você marcou no documento do aluno em um campo como {formado: [{semestre:..., ano:...}]}:
+  { $match: { "formado": { $elemMatch: { semestre: semestre_formatura, ano: ano_formatura } } } },
+  {
+    $project: {
+      _id: 1,
+      nome: 1
+    }
+  }
+])
+
+
+## Listar todos os professores que são chefes de departamento, junto com o nome do departamento
+
+
+db.departamentos.aggregate([
+  {
+    $lookup: {
+      from: "professores",
+      localField: "chefe_ra",
+      foreignField: "_id",
+      as: "chefe"
+    }
+  },
+  { $unwind: "$chefe" },
+  {
+    $project: {
+      _id: 0,
+      nome_departamento: "$_id",
+      nome_chefe: "$chefe.nome",
+      ra_chefe: "$chefe._id"
+    }
+  }
+])
+
+
+## Saber quais alunos formaram um grupo de TCC e qual professor foi o orientador
+
+db.orientador.aggregate([
+  {
+    $lookup: {
+      from: "professores",
+      localField: "orientador_ra",
+      foreignField: "_id",
+      as: "professor"
+    }
+  },
+  { $unwind: "$professor" },
+  {
+    $lookup: {
+      from: "alunos",
+      localField: "integrantes",
+      foreignField: "_id",
+      as: "alunos"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      grupo_id: 1,
+      integrantes: "$alunos.nome",
+      orientador_nome: "$professor.nome",
+      orientador_ra: "$orientador_ra"
+    }
+  }
+])
