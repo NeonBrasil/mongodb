@@ -1,0 +1,11 @@
+use DocumentStore;
+
+db.createCollection("alunos");
+db.createCollection("professores");
+db.createCollection("departamentos");
+db.createCollection("cursos");
+db.createCollection("disciplinas");
+db.createCollection("cursando");
+db.createCollection("leciona");
+db.createCollection("matriz_curricular");
+db.createCollection("orientador");
