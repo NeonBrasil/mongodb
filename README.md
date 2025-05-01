@@ -1,6 +1,6 @@
 # Projeto Banco de Dados NoSQL - Document Store (MongoDB)
 
-## 👨‍🏫 Integrantes do Grupo
+## 👨‍🏫 Integrante do Grupo
 
 - **Cayque** – matrícula `22221005-6`
 
