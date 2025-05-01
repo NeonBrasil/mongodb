@@ -9,3 +9,161 @@ db.createCollection("cursando");
 db.createCollection("leciona");
 db.createCollection("matriz_curricular");
 db.createCollection("orientador");
+
+ALUNOS
+Armazena informações cadastrais essenciais dos alunos.
+
+Campos:
+_id (RA do aluno)
+cpf
+nome
+email
+curso_id (Id do curso do aluno)
+{
+  "_id": "20210001",
+  "cpf": "123.456.789-88",
+  "nome": "Cayque Silva",
+  "email": "cayque@facul.edu",
+  "curso_id": "ENGCOMP01"
+}
+
+professores
+Registra os dados dos professores da instituição.
+
+Campos:
+_id (RA do professor)
+cpf
+nome
+email
+salario
+nome_dept (Nome do departamento do professor)
+
+{
+  "_id": "1001",
+  "cpf": "111.222.333-44",
+  "nome": "Alice Marques",
+  "email": "alice.marques@facul.edu",
+  "salario": 8600.50,
+  "nome_dept": "Computação"
+}
+
+
+departamentos
+Armazena informações sobre os departamentos da instituição.
+
+Campos:
+_id (nome do departamento)
+orcamento
+predio
+chefe_ra (RA do professor chefe do departamento)
+
+{
+  "_id": "Computação",
+  "orcamento": 500000.00,
+  "predio": "Bloco A",
+  "chefe_ra": "1001"
+}
+
+
+cursos
+Contém os dados referentes aos cursos oferecidos.
+
+Campos:
+_id (ID do curso)
+nome_curso
+nome_dept (nome do departamento ao qual o curso pertence)
+
+{
+  "_id": "ENGCOMP01",
+  "nome_curso": "Engenharia da Computação",
+  "nome_dept": "Computação"
+}
+
+
+disciplinas
+Registra as disciplinas/matérias do sistema.
+
+Campos:
+_id (ID da disciplina)
+nome_materia
+nome_dept (nome do departamento ofertante)
+curso_id (ID do curso relacionado à disciplina)
+
+{
+  "_id": "BD01",
+  "nome_materia": "Banco de Dados",
+  "nome_dept": "Computação",
+  "curso_id": "ENGCOMP01"
+}
+
+
+cursando
+Representa as disciplinas cursadas pelos alunos em determinados períodos, com nota e status.
+
+Campos:
+_id (Ex: "20210001BD012024.1")
+RA (RA do aluno)
+disciplina_id (ID da disciplina)
+Semestre
+Ano
+Nota
+status (aprovado/reprovado, etc)
+
+{
+  "_id": "20210001_BD01_2024.1",
+  "RA": "20210001",
+  "disciplina_id": "BD01",
+  "Semestre": "2024.1",
+  "Ano": 2024,
+  "Nota": 9.2,
+  "status": "aprovado"
+}
+
+
+leciona
+Relaciona cada professor às disciplinas que leciona em cada semestre/ano.
+
+Campos:
+RA_Prof (RA do professor)
+materia_id (ID da disciplina)
+Semestre
+Ano
+status
+
+{
+  "RA_Prof": "1001",
+  "materia_id": "BD01",
+  "Semestre": "2024.1",
+  "Ano": 2024,
+  "status": "ativo"
+}
+
+
+matriz_curricular
+Define as disciplinas obrigatórias da matriz curricular de cada curso.
+
+Campos:
+curso_id (ID do curso)
+materias (array de IDs das disciplinas)
+
+{
+  "curso_id": "ENGCOMP01",
+  "materias": ["BD01", "ED01", "ALG01"]
+}
+
+
+orientador
+Guarda informações de grupos de TCC, integrando alunos e seu professor orientador.
+
+Campos:
+grupo_id (Identificador do grupo de TCC)
+integrantes (array de RAs dos alunos do grupo)
+orientador_ra (RA do professor orientador)
+
+{
+  "grupo_id": "TCC2024-01",
+  "integrantes": ["20210001", "20210007"],
+  "orientador_ra": "1002"
+}
+
+
